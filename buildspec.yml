@@ -9,9 +9,13 @@ phases:
     commands:
       - npm ci
       - npm test
+      - rm -rf deploy
+      - mkdir -p deploy/scripts
+      - cp package.json package-lock.json server.js test.js appspec.yml buildspec.yml deploy/
+      - cp scripts/*.sh deploy/scripts/
 
 artifacts:
+  base-directory: deploy
   files:
     - "**/*"
-  exclude-paths:
-    - node_modules/**/*
+  discard-paths: no
