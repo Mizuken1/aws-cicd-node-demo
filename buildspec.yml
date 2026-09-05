@@ -9,10 +9,23 @@ phases:
     commands:
       - npm ci
       - npm test
+
+  post_build:
+    commands:
+      - echo "Preparing deployment artifact"
       - rm -rf deploy
       - mkdir -p deploy/scripts
-      - cp package.json package-lock.json server.js test.js appspec.yml buildspec.yml deploy/
-      - cp scripts/*.sh deploy/scripts/
+      - cp appspec.yml deploy/
+      - cp package.json deploy/
+      - cp package-lock.json deploy/
+      - cp server.js deploy/
+      - cp test.js deploy/
+      - cp scripts/before_install.sh deploy/scripts/
+      - cp scripts/after_install.sh deploy/scripts/
+      - cp scripts/start_application.sh deploy/scripts/
+      - cp scripts/validate_service.sh deploy/scripts/
+      - echo "=== DEPLOYMENT ARTIFACT ==="
+      - find deploy -type f -print
 
 artifacts:
   base-directory: deploy
